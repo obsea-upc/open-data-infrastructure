@@ -152,6 +152,12 @@ def service_nginx_config(name):
         "mmapi": mmapi_config,
         "goaccess": goaccess_config
     }
+
+    if name not in config.keys():
+        # Maybe it's a subset? like proxy-upc for proxy
+        if "-" in name and name.split("-")[0] in config.keys():
+            config[name] = config[name.split("-")[0]]
+
     if name not in config.keys():
         raise ValueError(f"NGINX configuration for service '{name}' not implemented!")
     return config[name]

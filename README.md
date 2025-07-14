@@ -92,7 +92,7 @@ You should now be able to access the services via the URLs configured in your in
 ### Contact info ###
 
 * **author**: Enoc Martínez  
-* **version**: 0.0.1
+* **version**: 0.1
 * **organization**: Universitat Politècnica de Catalunya (UPC)  
 * **contact**: enoc.martinez@upc.edu  
 

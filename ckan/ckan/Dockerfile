@@ -18,7 +18,5 @@ RUN for d in $APP_DIR/patches/*; do \
         fi ; \
     done
 # Install DCAT plugin
-
-RUN pip install -e "git+https://github.com/ckan/ckanext-scheming.git#egg=ckanext-scheming" &&\
-    pip install -e git+https://github.com/ckan/ckanext-dcat.git#egg=ckanext-dcat  &&\
+RUN pip install -e git+https://github.com/ckan/ckanext-dcat.git#egg=ckanext-dcat  &&\
     pip install -r /srv/app/src/ckanext-dcat/requirements.txt

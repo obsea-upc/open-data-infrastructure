@@ -2,7 +2,7 @@
 services:
   erddap:
     container_name: erddap
-    image: axiom/docker-erddap:2.18
+    image: axiom/docker-erddap:2.24-jdk21-openjdk
     restart: unless-stopped
     hostname: dummy-erddap
     environment:
@@ -15,3 +15,4 @@ services:
       - ./volumes/datasets:/datasets:ro    # bind mount for user data files
       - ./conf/custom_logo.png:/usr/local/tomcat/webapps/erddap/images/custom_logo.png:ro
       - ./conf/datasets.xml:/usr/local/tomcat/content/erddap/datasets.xml:ro
+      - ./conf/setup.xml:/usr/local/tomcat/content/erddap/setup.xml:ro

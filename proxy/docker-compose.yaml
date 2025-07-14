@@ -9,7 +9,7 @@ services:
       - 443:443
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./volumes/ssl:/ssl_keys:ro
+      - ./ssl:/ssl_keys:ro
       - ./volumes/log:/var/log/nginx
       - ./volumes/goaccess:/var/goaccess:ro
 

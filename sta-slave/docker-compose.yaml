@@ -29,7 +29,10 @@ services:
     env_file:
       - sta-slave.env
     volumes:
-      - ./volumes/pg_data:/home/postgres/replica # PostgresQL replica data
+      - ./volumes/pgdata:/home/postgres/pgdata  # PostgresQL data
+      - ./volumes/replica:/home/postgres/replica # PostgresQL replica data
+    ports:
+      - 5432:5432
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready", "-d", "sensorthings" ]
       interval: 30s

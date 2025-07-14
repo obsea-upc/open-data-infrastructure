@@ -2,21 +2,18 @@
 services:
   ckan:
     container_name: ckan
-    image: ckan_build
+    image: ckan-build
     build:
       context: ckan/
       dockerfile: Dockerfile
       args:
         - TZ=UTC
-    networks:
-      - ckannet
-      - ckan-db-net
-      - solrnet
-      - redisnet
     ports:
       - "${ODI_CKAN_PORT}:5000"
     env_file:
       - ./ckan.env
+    volumes:
+     - ./volumes/storage:/var/lib/ckan
     depends_on:
       ckan_db:
         condition: service_healthy
@@ -24,17 +21,12 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    volumes:
-      - ./volumes/storage:/var/lib/ckan
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
 
   datapusher:
     container_name: ckan_datapusher
-    networks:
-      - ckannet
-      - ckan-db-net
     image: ckan/ckan-base-datapusher:0.0.20
     restart: unless-stopped
     healthcheck:
@@ -42,18 +34,16 @@ services:
 
   ckan_db:
     container_name: ckan_db
+    image: ckan-db-build
     build:
       context: postgresql/
-    image: ckan_db
-    networks:
-      - ckan-db-net
     env_file:
       - ./ckan.env
+    volumes:
+      - ./volumes/pg_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
-    volumes:
-      - ./volumes/pg_data:/var/lib/postgresql/data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-d", "postgres"]
@@ -61,30 +51,18 @@ services:
   solr:
     container_name: ckan_solr
     user: "8983"
-    networks:
-      - solrnet
     image: ckan/ckan-solr:2.10-solr9
-    volumes:
-      - ./volumes/solr_data:/var/solr
     restart: unless-stopped
+    volumes:
+      - ./volumes/solr_data/data:/var/solr/data
+      - ./volumes/solr_data/logs:/var/solr/logs
+
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
 
   redis:
     container_name: ckan_redis
     image: redis:6
-    networks:
-      - redisnet
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
-
-networks:
-  webnet:
-  ckannet:
-  solrnet:
-    internal: true
-  ckan-db-net:
-    external: true
-  redisnet:
-    internal: true

@@ -38,10 +38,13 @@ def error(msg: any, exc=False):
 
 
 if __name__ == "__main__":
+
+    valid_options = ["up", "down", "start", "stop", "setup", "logs", "list", "remove", "logs"]
+
     argparser = ArgumentParser()
     argparser.add_argument("-i", "--infrastructure", help="Path no infrastructure.yaml", type=str,
                            default="/opt/odi/infrastructure.yaml")
-    argparser.add_argument("action", help="Docker action (up / down / start /stop)", type=str)
+    argparser.add_argument("action", help=f"Docker action ({' / '.join(valid_options)})", type=str)
     argparser.add_argument("services", help="service to list", type=str, nargs="*")
     argparser.add_argument("-v", "--verbose", help="verbose output", action="store_true")
     args = argparser.parse_args()
@@ -55,8 +58,6 @@ if __name__ == "__main__":
     dotenv.load_dotenv(os.path.join(infrastructure.path, "odi.env"))
     debug("Loading passwords.env file...")
     dotenv.load_dotenv(os.path.join(infrastructure.path, "secrets.env"))
-
-    valid_options = ["up", "down", "start", "stop", "setup", "logs", "list", "remove", "logs"]
 
     # if no services, apply the action to all of them
     valid_services = infrastructure.dcompose_services.keys()
@@ -118,6 +119,7 @@ if __name__ == "__main__":
             run_subprocess_pipe("docker compose logs", debug=verbose)
 
         elif args.action == "remove":
+            info(f"running docker compose down for '{service}'")
             run_subprocess_pipe("docker compose down", debug=verbose)
             infrastructure.remove_service(service)
         else:

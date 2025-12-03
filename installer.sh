@@ -84,7 +84,7 @@ apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docke
 
 echo "Adding user ${user} to docker group"
 usermod -aG docker ${user}
-mkdir /opt/odi
+mkdir -p /opt/odi
 chown -R ${user}:${user} /opt/odi
 ln -s /opt/odi/odi_manager.py /usr/local/bin/odi
 EOF

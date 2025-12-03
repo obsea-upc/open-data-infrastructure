@@ -2,7 +2,7 @@ services:
   # NGINX reverse-proxy2
   reverse:
     container_name: proxy
-    image: nginx:stable-bullseye
+    image: nginx:1.29.1-alpine3.22-slim
     hostname: reverse
     ports:
       - 80:80

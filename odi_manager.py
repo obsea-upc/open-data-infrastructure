@@ -9,6 +9,7 @@ license: MIT
 created: 5/11/23
 """
 from scripts.infrastructure import Infrastructure
+from scripts.update_secrets import update_secrets_file
 import dotenv
 from argparse import ArgumentParser
 import os
@@ -39,7 +40,7 @@ def error(msg: any, exc=False):
 
 if __name__ == "__main__":
 
-    valid_options = ["up", "down", "start", "stop", "setup", "logs", "list", "remove", "logs"]
+    valid_options = ["up", "down", "start", "stop", "setup", "logs", "list", "remove", "logs", "update-secrets"]
 
     argparser = ArgumentParser()
     argparser.add_argument("-i", "--infrastructure", help="Path no infrastructure.yaml", type=str,
@@ -65,6 +66,10 @@ if __name__ == "__main__":
     if "list" == args.action:
         rich.print(f"Valid services for host '{infrastructure.hostname}': {', '.join(valid_services)}")
         rich.print(f"Valid actions: {', '.join(valid_options)}")
+        exit()
+
+    if "update-secrets" == args.action:
+        update_secrets_file("/opt/odi/secrets.env")
         exit()
 
     services = args.services

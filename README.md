@@ -41,6 +41,7 @@
 
 * super-user permissions
 * apt-get 
+* SSL certificates and key
 
 Follow these steps to install and configure the **Open Data Infrastructure** stack on your system.
 
@@ -74,6 +75,9 @@ vim infrastructure.yaml
 cp secrets.env.template secrets.env
 vim secrets.env
 ```
+
+Copy your SSL keys in `/opt/proxy/ssl/` with the names `ssl_certificate.key`  `ssl_certificate.pem`.
+
 
 ### 3. 🚀 Launch the Infrastructure
 
